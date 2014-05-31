@@ -50,7 +50,7 @@
                 <ul class="nav">
                     <li class="active"><a href="#">Items</a></li>
                     <li><a href="sales">Sales</a></li>
-                    <li><a href="#contact">Analize</a></li>
+                    <li><a href="analiz">Analize</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -59,8 +59,8 @@
 
 <div class="container">
 
-    <div id="subject">
-        <form:form method="post" action="add" commandName="subject">
+    <div id="item">
+        <form:form method="post" action="add" commandName="item">
                    <form:input path="name" />
                    <input type="submit" class="btn btn-success" value="add item" />
         </form:form>
@@ -71,18 +71,20 @@
                 <tr>
                     <th>id</th>
                     <th>name</th>
+                    <th>quantity</th>
                     <th>actions</th>
                 </tr>
-                <c:forEach items="${subjectList}" var="subject">
+                <c:forEach items="${subjectList}" var="item">
                     <tr>
-                        <td>${subject.id}</td>
-                        <td>${subject.name}</td>
-                        <td><a href="delete/${subject.id}"><i class="icon-remove-sign"></i></a></td>
+                        <td>${item.id}</td>
+                        <td>${item.name}</td>
+                        <td>${item.quantity}</td>
+                        <td><a href="delete/${item.id}"><i class="icon-remove-sign"></i></a></td>
                     </tr>
                 </c:forEach>
             </table>
         </c:if>
-    </div><!--END subject-->
+    </div><!--END item-->
 
 
 

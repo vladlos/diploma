@@ -19,8 +19,8 @@
     <context:annotation-config />
 
     <!-- Определяем папки, в которых будем автоматически искать бины-компоненты (@Component, @Service)  -->
-    <context:component-scan base-package="com.spd.testing" />
-    <context:component-scan base-package="com.spd.testing" />
+    <context:component-scan base-package="ppp" />
+    <context:component-scan base-package="ppp" />
 
     <!-- Файл с настройками ресурсов для работы с данными (Data Access Resources) -->
     <import resource="data.xml" />

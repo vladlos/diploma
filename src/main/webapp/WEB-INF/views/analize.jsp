@@ -32,6 +32,10 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="resources/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="resources/ico/apple-touch-icon-57-precomposed.png">
     <link rel="shortcut icon" href="resources/ico/favicon.png">
+
+    <script src="resources/js/jquery.js"></script>
+    <script src="resources/js/core.js" ></script>
+    <script src="resources/js/line.js" ></script>
 </head>
 <body>
 
@@ -44,8 +48,8 @@
             <div class="nav-collapse collapse">
                 <ul class="nav">
                     <li ><a href="index">Items</a></li>
-                    <li class="active"><a href="sales">Sales</a></li>
-                    <li><a href="analiz">Analize</a></li>
+                    <li ><a href="sales">Sales</a></li>
+                    <li class="active"><a href="analiz">Analize</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -58,58 +62,83 @@
 
 
 <div class="container">
-<div class="row">
-    <div class="span4">
-        <h3>Items</h3>
+    <div class="row">
+        <div class="span4">
+            <h3>Items</h3>
 
-        <c:choose>
-            <c:when test="${!empty subjectList}">
-                <table class="table table-bordered table-hover itemenu" >
+            <c:choose>
+                <c:when test="${!empty subjectList}">
+                    <table class="table table-bordered table-hover itemenu" >
 
-                    <c:forEach items="${subjectList}" var="item">
-                        <tr>
+                        <c:forEach items="${subjectList}" var="item">
+                            <tr>
 
-                            <td> <a href="choose/${item.id}">${item.name}</a></td>
+                                <td> <a href="choosetoanaliz/${item.id}">${item.name}</a></td>
 
-                        </tr>
-                    </c:forEach>
-                </table>
-            </c:when>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </c:when>
 
-            <c:otherwise>
-                <a href="/index">add</a>some items
+                <c:otherwise>
+                    <a href="/index">add</a>some items
 
-            </c:otherwise>
-        </c:choose>
+                </c:otherwise>
+            </c:choose>
+        </div>
+        <div class="span8">
+            <h2>The analize of ${actives.name}</h2>
+
+
+            <c:choose>
+                <c:when test="${!empty salesList}">
+
+
+                    <!-- 2/3. This is the canvas that the graph is drawn on -->
+                    <canvas id="cvs" width="640" height="350">[No canvas support]</canvas>
+
+                    <!--
+                    3/3. This creates and displays the graph. As it is here, you can call this from the window.onload event,
+                    allowing you to put it in your pages header.
+                    -->
+                    <script>
+                        $(document).ready(function ()
+                        {
+                            var line = new RGraph.Line('cvs', [
+                                <c:forEach items="${salesList}" var="sale">
+                                ${sale.quantity},
+                                </c:forEach>],
+                                [<c:forEach items="${ema}" var="n">
+                                ${n}, </c:forEach>]
+                            )
+                                    .set('gutter.left',60)
+                                    .set('hmargin', 10)
+                                    .set('tickmarks', 'endcircle')
+                                    .set('labels', [
+                                        <c:forEach items="${salesList}" var="sale">
+                                        '${sale.period}',
+                                        </c:forEach>
+
+                                    ])
+                                    .draw();
+                        })
+                    </script>
+
+
+
+
+
+
+
+
+                </c:when>
+                <c:otherwise>
+                    add some sales to ${actives.name}
+                </c:otherwise>
+            </c:choose>
+
+        </div>
     </div>
-    <div class="span8">
-        <h2>The sales of ${actives.name}</h2>
-        <form:form commandName="sale" method="post" action="addsale">
-            <form:input path="period"  placeholder="period"/>
-            <form:input path="quantity" placeholder="quantity"/>
-            <input type="submit" class="btn btn-success" value="add sale" />
-        </form:form>
-
-        <c:choose>
-            <c:when test="${!empty salesList}">
-                <table class="table table-striped">
-                    <c:forEach items="${salesList}" var="sale">
-                        <tr>
-                            <td>${sale.period}</td>
-                            <td>${sale.quantity}</td>
-                            <td><a href="deletes/${sale.id}"><i class="icon-remove-sign"></i></a></td>
-                        </tr>
-                    </c:forEach>
-                </table>
-            </c:when>
-            <c:otherwise>
-                add some sales to ${actives.name}
-            </c:otherwise>
-        </c:choose>
-
-
-    </div>
-</div>
 
 
 </div>
@@ -117,7 +146,6 @@
 <!-- Le javascript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="resources/js/jquery.js"></script>
 
 
 <script>

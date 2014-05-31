@@ -1,7 +1,7 @@
-package com.spd.testing.web;
+package ppp.web;
 
-import com.spd.testing.domain.Subject;
-import com.spd.testing.service.SubjectService;
+import ppp.domain.Item;
+import ppp.service.ItemsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -20,18 +20,18 @@ import java.util.Map;
 public class HomeController {
 
     @Autowired
-    private SubjectService subjectService;
+    private ItemsService subjectService;
 
 
 
     @RequestMapping("/index")
     public String listAll(Map <String, Object> map) {
 
-        map.put("subject", new Subject());
-        List<Subject> ls = subjectService.listSubject();
+        map.put("item", new Item());
+        List<Item> ls = subjectService.listSubject();
         map.put("subjectList", ls);
 
-        return "admin";
+        return "items";
     }
 
 
@@ -42,10 +42,10 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addContact(@ModelAttribute("subject") Subject subject,
+    public String addContact(@ModelAttribute("subject") Item item,
                              BindingResult result) {
 
-        subjectService.addSubject(subject);
+        subjectService.addSubject(item);
 
         return "redirect:/index";
     }
@@ -56,7 +56,7 @@ public class HomeController {
     public String deleteContact(@PathVariable("subjectId") Integer subjectId) {
 
         subjectService.removeSubject(subjectId);
-
+        SalesController.activesubject=null;
         return "redirect:/index";
     }
 
